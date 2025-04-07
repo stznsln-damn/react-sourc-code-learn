@@ -1,0 +1,84 @@
+{
+	"files": [
+		{
+			"path": "packages/scheduler/src/SchedulerFeatureFlags.js",
+			"bookmarks": [
+				{
+					"line": 10,
+					"column": 31,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/scheduler/src/SchedulerMinHeap.js",
+			"bookmarks": [
+				{
+					"line": 14,
+					"column": 30,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/scheduler/src/SchedulerPriorities.js",
+			"bookmarks": [
+				{
+					"line": 9,
+					"column": 50,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/scheduler/src/forks/Scheduler.js",
+			"bookmarks": [
+				{
+					"line": 49,
+					"column": 27,
+					"label": ""
+				},
+				{
+					"line": 60,
+					"column": 55,
+					"label": ""
+				},
+				{
+					"line": 109,
+					"column": 45,
+					"label": ""
+				},
+				{
+					"line": 155,
+					"column": 41,
+					"label": ""
+				},
+				{
+					"line": 205,
+					"column": 40,
+					"label": ""
+				},
+				{
+					"line": 364,
+					"column": 35,
+					"label": ""
+				},
+				{
+					"line": 506,
+					"column": 39,
+					"label": ""
+				},
+				{
+					"line": 548,
+					"column": 40,
+					"label": ""
+				},
+				{
+					"line": 584,
+					"column": 37,
+					"label": ""
+				}
+			]
+		}
+	]
+}
