@@ -8,11 +8,11 @@
  */
 
 export const enableProfiling = false;
-export const frameYieldMs = 5;
+export const frameYieldMs = 5; // !一个时间切片的时间 5ms
 
-export const userBlockingPriorityTimeout = 250;
-export const normalPriorityTimeout = 5000;
-export const lowPriorityTimeout = 10000;
+export const userBlockingPriorityTimeout = 250; // !用户阻塞优先级超时时间
+export const normalPriorityTimeout = 5000; // !正常优先级超时时间
+export const lowPriorityTimeout = 10000; // !低优先级超时时间
 export const enableRequestPaint = true;
 
 export const enableAlwaysYieldScheduler = __EXPERIMENTAL__;
