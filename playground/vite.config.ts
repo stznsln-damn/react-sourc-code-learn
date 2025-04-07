@@ -7,22 +7,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // react: path.resolve(
-      //   __dirname,
-      //   '../build/node_modules/react/cjs/react.development.js',
-      // ),
-      'react-dom/client': path.resolve(
-        __dirname,
-        '../build/node_modules/react-dom/cjs/react-dom-client.development.js',
-      ),
-      // 'react/jsx-dev-runtime': path.resolve(
-      //   __dirname,
-      //   '../build/node_modules/react/cjs/react-jsx-dev-runtime.development.js',
-      // ),
-      // 'react/jsx-runtime': path.resolve(
-      //   __dirname,
-      //   '../build/node_modules/react/cjs/react-jsx-runtime.development.js',
-      // ),
+      react: path.resolve(__dirname, '../build/oss-stable/react'),
+      'react-dom': path.resolve(__dirname, '../build/oss-stable/react-dom'),
+      scheduler: path.resolve(__dirname, '../build/oss-stable/scheduler'),
     },
   },
 });
