@@ -5,6 +5,11 @@ import react from '@vitejs/plugin-react';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    commonjsOptions: {
+      include: ['react', 'react-dom/client'],
+    },
+  },
   resolve: {
     alias: {
       react: path.resolve(__dirname, '../build/oss-stable/react'),
@@ -14,10 +19,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom/client'],
-  },
-  build: {
-    commonjsOptions: {
-      include: ['react', 'react-dom/client'],
-    },
+    force: true,
   },
 });
