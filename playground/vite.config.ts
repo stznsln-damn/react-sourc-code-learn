@@ -12,4 +12,12 @@ export default defineConfig({
       scheduler: path.resolve(__dirname, '../build/oss-stable/scheduler'),
     },
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom/client'],
+  },
+  build: {
+    commonjsOptions: {
+      include: ['react', 'react-dom/client'],
+    },
+  },
 });

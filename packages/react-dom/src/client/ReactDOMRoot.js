@@ -236,6 +236,8 @@ export function createRoot(
   );
   markContainerAsRoot(root.current, container);
 
+  console.log(root, 'fiber root');
+
   const rootContainerElement: Document | Element | DocumentFragment =
     !disableCommentsAsDOMContainers && container.nodeType === COMMENT_NODE
       ? (container.parentNode: any)
