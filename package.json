@@ -119,7 +119,7 @@
     "testRegex": "/scripts/jest/dont-run-jest-directly\\.js$"
   },
   "scripts": {
-    "prebuild": "./scripts/react-compiler/link-compiler.sh",
+    "prebuild": "bash ./scripts/react-compiler/link-compiler.sh",
     "build": "node ./scripts/rollup/build-all-release-channels.js",
     "build-for-devtools": "cross-env RELEASE_CHANNEL=experimental yarn build react/index,react/jsx,react/compiler-runtime,react-dom/index,react-dom/client,react-dom/unstable_testing,react-dom/test-utils,react-is,react-debug-tools,scheduler,react-test-renderer,react-refresh,react-art --type=NODE",
     "build-for-devtools-dev": "yarn build-for-devtools --type=NODE_DEV",
@@ -127,7 +127,7 @@
     "build-for-flight-dev": "cross-env RELEASE_CHANNEL=experimental node ./scripts/rollup/build.js react/index,react/jsx,react.react-server,react-dom/index,react-dom/client,react-dom/server,react-dom.react-server,react-dom-server.node,react-dom-server-legacy.node,scheduler,react-server-dom-webpack/ --type=NODE_DEV,ESM_PROD,NODE_ES2015 && mv ./build/node_modules ./build/oss-experimental",
     "build-for-vt-dev": "cross-env RELEASE_CHANNEL=experimental node ./scripts/rollup/build.js react/index,react/jsx,react-dom/index,react-dom/client,react-dom/server,react-dom-server.node,react-dom-server-legacy.node,scheduler --type=NODE_DEV && mv ./build/node_modules ./build/oss-experimental",
     "build:learn": "yarn build react/index,react/jsx,react-dom/index,react-dom/client,scheduler --type=NODE_DEV",
-    "build:learn:watch": "nodemon --watch packages --ext js,jsx,ts,tsx --ignore '**/node_modules/**' --ignore '**/ReactVersion.js' --delay 2 --exec \"yarn build:learn\"",
+    "build:learn:watch": "nodemon --watch packages --ext js,jsx,ts,tsx --ignore '**/node_modules/**' --ignore ReactVersion.js --delay 2 --verbose --exec \"yarn build:learn\"",
     "linc": "node ./scripts/tasks/linc.js",
     "lint": "node ./scripts/tasks/eslint.js",
     "lint-build": "node ./scripts/rollup/validate/index.js",
