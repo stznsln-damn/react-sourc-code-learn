@@ -229,6 +229,7 @@ function findHostInstanceWithWarning(
   return findHostInstance(component);
 }
 
+// !创建fiber root
 export function createContainer(
   containerInfo: Container,
   tag: RootTag,
@@ -340,13 +341,16 @@ export function createHydrationContainer(
   return root;
 }
 
+// !更新fiber root
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
-  parentComponent: ?React$Component<any, any>,
+  parentComponent: ?React$Component<any, any>, // !初始render为null
   callback: ?Function,
 ): Lane {
+  // !container.current为 hostRootFiber
   const current = container.current;
+  // !获取更新优先级
   const lane = requestUpdateLane(current);
   updateContainerImpl(
     current,
@@ -380,13 +384,14 @@ export function updateContainerSync(
   return SyncLane;
 }
 
+// !更新fiber root
 function updateContainerImpl(
-  rootFiber: Fiber,
-  lane: Lane,
-  element: ReactNodeList,
-  container: OpaqueRoot,
-  parentComponent: ?React$Component<any, any>,
-  callback: ?Function,
+  rootFiber: Fiber, // !hostRootFiber
+  lane: Lane, // !更新优先级
+  element: ReactNodeList, // !更新内容
+  container: OpaqueRoot, // !fiber root
+  parentComponent: ?React$Component<any, any>, // !父组件
+  callback: ?Function, // !更新回调
 ): void {
   if (__DEV__) {
     onScheduleRoot(container, element);
@@ -396,6 +401,7 @@ function updateContainerImpl(
     markRenderScheduled(lane);
   }
 
+  // !初次render，context为空对象
   const context = getContextForSubtree(parentComponent);
   if (container.context === null) {
     container.context = context;
@@ -420,6 +426,7 @@ function updateContainerImpl(
     }
   }
 
+  // !创建更新
   const update = createUpdate(lane);
   // Caution: React DevTools currently depends on this property
   // being called "element".

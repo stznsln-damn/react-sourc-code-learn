@@ -189,12 +189,13 @@ if (__DEV__) {
   didWarnAboutUseFormState = new Set<string | null>();
 }
 
+// !Hook类型定义
 export type Hook = {
-  memoizedState: any,
-  baseState: any,
-  baseQueue: Update<any, any> | null,
-  queue: any,
-  next: Hook | null,
+  memoizedState: any, // !内存状态, 用于输出成最终的fiber树
+  baseState: any, // !基础状态, 当Hook.queue更新过后, baseState也会更新.
+  baseQueue: Update<any, any> | null, // !基础状态队列, 在reconciler阶段会辅助状态合并.
+  queue: any, // !指向一个Update队列
+  next: Hook | null, // !指向该function组件的下一个Hook对象, 使得多个Hook之间也构成了一个链表.
 };
 
 // The effect "instance" is a shared object that remains the same for the entire

@@ -84,6 +84,7 @@ export type MemoCache = {
 
 // A Fiber is work on a Component that needs to be done or was done. There can
 // be more than one per component.
+// !Fiber类型定义
 export type Fiber = {
   // These first fields are conceptually members of an Instance. This used to
   // be split into a separate type and intersected with the other Fiber fields,
@@ -96,19 +97,24 @@ export type Fiber = {
   // minimize the number of objects created during the initial render.
 
   // Tag identifying the type of fiber.
+  // !Fiber类型 根据ReactElement组件的 type 进行生成 31种类型
   tag: WorkTag,
 
   // Unique identifier of this child.
+  // !和ReactElement组件的 key 一致.
   key: null | string,
 
   // The value of element.type which is used to preserve the identity during
   // reconciliation of this child.
+  // !一般来讲和ReactElement组件的 type 一致
   elementType: any,
 
   // The resolved function/class/ associated with this fiber.
+  // !!一般来讲和fiber.elementType一致. 一些特殊情形下, 比如在开发环境下为了兼容热更新(HotReloading), 会对function, class, ForwardRef类型的ReactElement做一定的处理, 这种情况会区别于fiber.elementType, 具体赋值关系可以查看源文件.
   type: any,
 
   // The local state associated with this fiber.
+  // !指向的是FiberRoot; class 类型节点其stateNode指向的是 class 实例).
   stateNode: any,
 
   // Conceptual aliases
@@ -121,15 +127,20 @@ export type Fiber = {
   // This is effectively the parent, but there can be multiple parents (two)
   // so this is only the parent of the thing we're currently processing.
   // It is conceptually the same as the return address of a stack frame.
+  // !指向父fiber
   return: Fiber | null,
 
   // Singly Linked List Tree Structure.
+  // !指向子fiber
   child: Fiber | null,
+  // !指向兄弟fiber
   sibling: Fiber | null,
+  // !fiber在兄弟节点中的索引
   index: number,
 
   // The ref last used to attach this node.
   // I'll avoid adding an owner field for prod and model that as functions.
+  // !指向在ReactElement组件上设置的 ref(string类型的ref除外, 这种类型的ref已经不推荐使用, reconciler阶段会将string类型的ref转换成一个function类型).
   ref:
     | null
     | (((handle: mixed) => void) & {_stringRef: ?string, ...})
@@ -138,16 +149,21 @@ export type Fiber = {
   refCleanup: null | (() => void),
 
   // Input is the data coming into process this fiber. Arguments. Props.
+  // !输入属性, 从ReactElement对象传入的 props. 用于和fiber.memoizedProps比较可以得出属性是否变动.
   pendingProps: any, // This type will be more specific once we overload the tag.
+  // !上一次生成子节点时用到的属性, 生成子节点之后保持在内存中. 向下生成子节点之前叫做pendingProps, 生成子节点之后会把pendingProps赋值给memoizedProps用于下一次比较.pendingProps和memoizedProps比较可以得出属性是否变动.
   memoizedProps: any, // The props used to create the output.
 
   // A queue of state updates and callbacks.
+  // !存储update更新对象的队列, 每一次发起更新, 都需要在该队列上创建一个update对象.
   updateQueue: mixed,
 
   // The state used to create the output
+  // !上一次生成子节点之后保持在内存中的局部状态. 函数组件为hooks状态链表 class组件为state.
   memoizedState: any,
 
   // Dependencies (contexts, events) for this fiber, if it has any
+  // !该 fiber 节点所依赖的(contexts, events)等, 在context机制章节详细说明.
   dependencies: Dependencies | null,
 
   // Bitfield that describes properties about the fiber and its subtree. E.g.
@@ -156,19 +172,26 @@ export type Fiber = {
   // parent. Additional flags can be set at creation time, but after that the
   // value should remain unchanged throughout the fiber's lifetime, particularly
   // before its child fibers are created.
+  // !二进制位 Bitfield,继承至父节点,影响本 fiber 节点及其子树中所有节点. 与 react 应用的运行模式有关(有 ConcurrentMode, BlockingMode, NoMode 等选项).
   mode: TypeOfMode,
 
   // Effect
+  // !标志位, 副作用标记(在 16.x 版本中叫做effectTag, 相应pr), 在ReactFiberFlags.js中定义了所有的标志位. reconciler阶段会将所有拥有flags标记的节点添加到副作用链表中, 等待 commit 阶段的处理.
   flags: Flags,
+  // !替代 16.x 版本中的 firstEffect, nextEffect. 默认未开启, 当设置了enableNewReconciler=true 才会启用, 本系列只跟踪稳定版的代码, 未来版本不会深入解读, 使用示例见源码.
   subtreeFlags: Flags,
+  // !存储将要被删除的子节点. 默认未开启, 当设置了enableNewReconciler=true 才会启用, 本系列只跟踪稳定版的代码, 未来版本不会深入解读, 使用示例见源码.
   deletions: Array<Fiber> | null,
 
+  // !本 fiber 节点所属的优先级, 创建 fiber 的时候设置.
   lanes: Lanes,
+  // !子 fiber 节点所属的优先级
   childLanes: Lanes,
 
   // This is a pooled version of a Fiber. Every fiber that gets updated will
   // eventually have a pair. There are cases when we can clean up pairs to save
   // memory if we need to.
+  // !指向内存中的另一个 fiber, 每个被更新过 fiber 节点在内存中都是成对出现(current 和 workInProgress)
   alternate: Fiber | null,
 
   // Time spent rendering this Fiber and its descendants for the current update.

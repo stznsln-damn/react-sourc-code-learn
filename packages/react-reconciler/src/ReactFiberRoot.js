@@ -145,6 +145,7 @@ function FiberRootNode(
   }
 }
 
+// 创建fiber root
 export function createFiberRoot(
   containerInfo: Container,
   tag: RootTag,
@@ -196,8 +197,11 @@ export function createFiberRoot(
 
   // Cyclic construction. This cheats the type system right now because
   // stateNode is any.
+  // !创建hostRootFiber
   const uninitializedFiber = createHostRootFiber(tag, isStrictMode);
+  // !将hostRootFiber赋值给root.current
   root.current = uninitializedFiber;
+  // !root绑定到hostRootFiber.stateNode 互相引用
   uninitializedFiber.stateNode = root;
 
   const initialCache = createCache();
@@ -217,6 +221,7 @@ export function createFiberRoot(
     isDehydrated: hydrate,
     cache: initialCache,
   };
+  // !初始化根fiber的memoizedState
   uninitializedFiber.memoizedState = initialState;
 
   initializeUpdateQueue(uninitializedFiber);

@@ -133,6 +133,7 @@ if (__DEV__) {
   }
 }
 
+// !FiberNode类创建
 function FiberNode(
   this: $FlowFixMe,
   tag: WorkTag,
@@ -298,6 +299,7 @@ function createFiberImplObject(
   return fiber;
 }
 
+// !一般为createFiberImplClass
 const createFiber = enableObjectFiber
   ? createFiberImplObject
   : createFiberImplClass;
@@ -518,6 +520,7 @@ export function resetWorkInProgress(
   return workInProgress;
 }
 
+// !创建hostRootFiber 根fiber
 export function createHostRootFiber(
   tag: RootTag,
   isStrictMode: boolean,

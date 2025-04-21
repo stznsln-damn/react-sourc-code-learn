@@ -93,11 +93,13 @@ import {
 import {ConcurrentRoot} from 'react-reconciler/src/ReactRootTags';
 
 // $FlowFixMe[missing-this-annot]
+// !ReactRoot
 function ReactDOMRoot(internalRoot: FiberRoot) {
   this._internalRoot = internalRoot;
 }
 
 // $FlowFixMe[prop-missing] found when upgrading Flow
+// !reactRoot渲染方法 children: 一般为根组件App
 ReactDOMHydrationRoot.prototype.render = ReactDOMRoot.prototype.render =
   // $FlowFixMe[missing-this-annot]
   function (children: ReactNodeList): void {
@@ -162,6 +164,9 @@ ReactDOMHydrationRoot.prototype.unmount = ReactDOMRoot.prototype.unmount =
     }
   };
 
+/**
+ * !创建react root
+ */
 export function createRoot(
   container: Element | Document | DocumentFragment,
   options?: CreateRootOptions,
@@ -222,6 +227,7 @@ export function createRoot(
     }
   }
 
+  // !创建fiber root
   const root = createContainer(
     container,
     ConcurrentRoot,
@@ -234,14 +240,16 @@ export function createRoot(
     onRecoverableError,
     transitionCallbacks,
   );
+  // !标记container为root
   markContainerAsRoot(root.current, container);
 
-  console.log(root, 'fiber root', '哈哈哈333');
+  // console.log(root, 'fiber root', '哈哈哈333');
 
   const rootContainerElement: Document | Element | DocumentFragment =
     !disableCommentsAsDOMContainers && container.nodeType === COMMENT_NODE
       ? (container.parentNode: any)
       : container;
+  // !事件代理，监听所有事件 绑定在rootContainerElement上
   listenToAllSupportedEvents(rootContainerElement);
 
   // $FlowFixMe[invalid-constructor] Flow no longer supports calling new on functions

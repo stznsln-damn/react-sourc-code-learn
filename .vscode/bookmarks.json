@@ -79,6 +79,111 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "packages/react-dom/src/client/ReactDOMRoot.js",
+			"bookmarks": [
+				{
+					"line": 96,
+					"column": 48,
+					"label": ""
+				},
+				{
+					"line": 102,
+					"column": 72,
+					"label": ""
+				},
+				{
+					"line": 130,
+					"column": 5,
+					"label": ""
+				},
+				{
+					"line": 169,
+					"column": 27,
+					"label": ""
+				},
+				{
+					"line": 252,
+					"column": 51,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberReconciler.js",
+			"bookmarks": [
+				{
+					"line": 232,
+					"column": 32,
+					"label": ""
+				},
+				{
+					"line": 344,
+					"column": 32,
+					"label": ""
+				},
+				{
+					"line": 387,
+					"column": 29,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberRoot.js",
+			"bookmarks": [
+				{
+					"line": 148,
+					"column": 32,
+					"label": ""
+				},
+				{
+					"line": 200,
+					"column": 31,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiber.js",
+			"bookmarks": [
+				{
+					"line": 136,
+					"column": 19,
+					"label": ""
+				},
+				{
+					"line": 224,
+					"column": 30,
+					"label": ""
+				},
+				{
+					"line": 523,
+					"column": 36,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactInternalTypes.js",
+			"bookmarks": [
+				{
+					"line": 87,
+					"column": 21,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberHooks.js",
+			"bookmarks": [
+				{
+					"line": 192,
+					"column": 20,
+					"label": ""
+				}
+			]
 		}
 	]
 }
