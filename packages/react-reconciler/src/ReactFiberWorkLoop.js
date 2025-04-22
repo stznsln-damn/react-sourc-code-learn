@@ -862,6 +862,7 @@ export function peekDeferredLane(): Lane {
   return workInProgressDeferredLane;
 }
 
+// !调度更新fiber
 export function scheduleUpdateOnFiber(
   root: FiberRoot,
   fiber: Fiber,
@@ -902,6 +903,7 @@ export function scheduleUpdateOnFiber(
   }
 
   // Mark that the root has a pending update.
+  // !标记root有新的更新
   markRootUpdated(root, lane);
 
   if (
@@ -968,6 +970,7 @@ export function scheduleUpdateOnFiber(
       }
     }
 
+    // !安排调度
     ensureRootIsScheduled(root);
     if (
       lane === SyncLane &&

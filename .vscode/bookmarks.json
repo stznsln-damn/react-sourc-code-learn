@@ -219,6 +219,51 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+			"bookmarks": [
+				{
+					"line": 865,
+					"column": 7,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+			"bookmarks": [
+				{
+					"line": 86,
+					"column": 36,
+					"label": ""
+				},
+				{
+					"line": 104,
+					"column": 12,
+					"label": ""
+				},
+				{
+					"line": 203,
+					"column": 31,
+					"label": ""
+				},
+				{
+					"line": 247,
+					"column": 43,
+					"label": ""
+				},
+				{
+					"line": 328,
+					"column": 40,
+					"label": ""
+				},
+				{
+					"line": 600,
+					"column": 46,
+					"label": ""
+				}
+			]
 		}
 	]
 }

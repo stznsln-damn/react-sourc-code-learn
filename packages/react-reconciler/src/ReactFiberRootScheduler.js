@@ -83,6 +83,7 @@ import {
 // A linked list of all the roots with pending work. In an idiomatic app,
 // there's only a single root, but we do support multi root apps, hence this
 // extra complexity. But this module is optimized for the single root case.
+// !调度的链表结构 一般只有一个react根节点的情况下只有一个fiberRoot
 export let firstScheduledRoot: FiberRoot | null = null;
 let lastScheduledRoot: FiberRoot | null = null;
 
@@ -100,6 +101,7 @@ let isFlushingWork: boolean = false;
 
 let currentEventTransitionLane: Lane = NoLane;
 
+// !将当前fiberRoot添加到调度队列
 export function ensureRootIsScheduled(root: FiberRoot): void {
   // This function is called whenever a root receives an update. It does two
   // things 1) it ensures the root is in the root schedule, and 2) it ensures
@@ -109,6 +111,7 @@ export function ensureRootIsScheduled(root: FiberRoot): void {
   // `scheduleTaskForRootDuringMicrotask` runs.
 
   // Add the root to the schedule
+  // !将fiberRoot添加到调度链表
   if (root === lastScheduledRoot || root.next !== null) {
     // Fast path. This root is already scheduled.
   } else {
@@ -123,6 +126,7 @@ export function ensureRootIsScheduled(root: FiberRoot): void {
   // Any time a root received an update, we set this to true until the next time
   // we process the schedule. If it's false, then we can quickly exit flushSync
   // without consulting the schedule.
+  // !标记“可能有同步任务需要处理”
   mightHavePendingSyncWork = true;
 
   // At the end of the current event, go through each of the roots and ensure
@@ -136,6 +140,7 @@ export function ensureRootIsScheduled(root: FiberRoot): void {
   } else {
     if (!didScheduleMicrotask) {
       didScheduleMicrotask = true;
+      // !确保在事件循环的微任务阶段，会有任务去遍历并处理所有调度队列里的 root。
       scheduleImmediateRootScheduleTask();
     }
   }
@@ -239,6 +244,7 @@ function processRootScheduleInImmediateTask() {
   processRootScheduleInMicrotask();
 }
 
+// !在微任务中 执行调度任务
 function processRootScheduleInMicrotask() {
   // This function is always called inside a microtask. It should never be
   // called synchronously.
@@ -264,6 +270,7 @@ function processRootScheduleInMicrotask() {
   const currentTime = now();
 
   let prev = null;
+  // !遍历调度链表
   let root = firstScheduledRoot;
   while (root !== null) {
     const next = root.next;
@@ -318,6 +325,7 @@ function processRootScheduleInMicrotask() {
   }
 }
 
+// !执行调度
 function scheduleTaskForRootDuringMicrotask(
   root: FiberRoot,
   currentTime: number,
@@ -331,6 +339,7 @@ function scheduleTaskForRootDuringMicrotask(
 
   // Check if any lanes are being starved by other work. If so, mark them as
   // expired so we know to work on those next.
+  // !标记过期的lane
   markStarvedLanesAsExpired(root, currentTime);
 
   // Determine the next lanes to work on, and their priority.
@@ -377,6 +386,7 @@ function scheduleTaskForRootDuringMicrotask(
 
   // Schedule a new callback in the host environment.
   if (
+    // !同步lane (首次渲染为同步)
     includesSyncLane(nextLanes) &&
     // If we're prerendering, then we should use the concurrent work loop
     // even if the lanes are synchronous, so that prerendering never blocks
@@ -584,6 +594,10 @@ function cancelCallback(callbackNode: mixed) {
   }
 }
 
+/**
+ * !将更新调度任务添加到调度队列 通过微任务
+ * !微任务可以实现批量更新
+ */
 function scheduleImmediateRootScheduleTask() {
   if (__DEV__ && ReactSharedInternals.actQueue !== null) {
     // Special case: Inside an `act` scope, we push microtasks to the fake `act`
@@ -599,7 +613,9 @@ function scheduleImmediateRootScheduleTask() {
 
   // TODO: Can we land supportsMicrotasks? Which environments don't support it?
   // Alternatively, can we move this check to the host config?
+  // !一般为true
   if (supportsMicrotasks) {
+    // !在微任务中 执行调度任务
     scheduleMicrotask(() => {
       // In Safari, appending an iframe forces microtasks to run.
       // https://github.com/facebook/react/issues/22459
@@ -607,6 +623,7 @@ function scheduleImmediateRootScheduleTask() {
       // or commit so we need to check against that.
       const executionContext = getExecutionContext();
       if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
+        // !在 useLayoutEffect、生命周期、render 阶段等“同步阶段”又触发了更新，并且调度器试图在微任务中处理这些更新时，就会走这个分支。
         // Note that this would still prematurely flush the callbacks
         // if this happens outside render or commit phase (e.g. in an event).
 
@@ -620,6 +637,7 @@ function scheduleImmediateRootScheduleTask() {
         );
         return;
       }
+      // !一般情况调用这个函数
       processRootScheduleInMicrotask();
     });
   } else {
