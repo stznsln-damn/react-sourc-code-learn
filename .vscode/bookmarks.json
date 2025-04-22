@@ -264,6 +264,36 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "packages/react-dom-bindings/src/events/DOMPluginEventSystem.js",
+			"bookmarks": [
+				{
+					"line": 374,
+					"column": 36,
+					"label": ""
+				},
+				{
+					"line": 431,
+					"column": 3,
+					"label": ""
+				},
+				{
+					"line": 461,
+					"column": 33,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-dom-bindings/src/events/ReactDOMEventListener.js",
+			"bookmarks": [
+				{
+					"line": 84,
+					"column": 55,
+					"label": ""
+				}
+			]
 		}
 	]
 }

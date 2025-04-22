@@ -428,6 +428,7 @@ export function listenToNativeEventForNonManagedEventTarget(
 
 const listeningMarker = '_reactListening' + Math.random().toString(36).slice(2);
 
+// !在dom根节点监听所有事件
 export function listenToAllSupportedEvents(rootContainerElement: EventTarget) {
   if (!(rootContainerElement: any)[listeningMarker]) {
     (rootContainerElement: any)[listeningMarker] = true;
@@ -436,8 +437,10 @@ export function listenToAllSupportedEvents(rootContainerElement: EventTarget) {
       // doesn't bubble and needs to be on the document.
       if (domEventName !== 'selectionchange') {
         if (!nonDelegatedEvents.has(domEventName)) {
+          // !冒泡阶段监听domEventName以外的事件 如click等
           listenToNativeEvent(domEventName, false, rootContainerElement);
         }
+        // !捕获阶段监听所有事件
         listenToNativeEvent(domEventName, true, rootContainerElement);
       }
     });
