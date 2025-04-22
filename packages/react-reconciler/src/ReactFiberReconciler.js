@@ -446,9 +446,11 @@ function updateContainerImpl(
     update.callback = callback;
   }
 
+  // !把更新添加到fiber的更新队列 root: FiberRoot
   const root = enqueueUpdate(rootFiber, update, lane);
   if (root !== null) {
     startUpdateTimerByLane(lane);
+    // !使用调度器调度更新
     scheduleUpdateOnFiber(root, rootFiber, lane);
     entangleTransitions(root, rootFiber, lane);
   }

@@ -220,6 +220,7 @@ export function createUpdate(lane: Lane): Update<mixed> {
   return update;
 }
 
+// !将更新添加到fiber的更新队列
 export function enqueueUpdate<State>(
   fiber: Fiber,
   update: Update<State>,
@@ -250,6 +251,8 @@ export function enqueueUpdate<State>(
     }
   }
 
+  // !是否是不安全的render phase更新 类组件render过程中调用setState/UNSAFE_componentWillMount/UNSAFE_componentWillUpdate 里调用 setState
+  // !函数组件固定为false
   if (isUnsafeClassRenderPhaseUpdate(fiber)) {
     // This is an unsafe render phase update. Add directly to the update
     // queue so we can process it immediately during the current render.
@@ -269,6 +272,7 @@ export function enqueueUpdate<State>(
     // currently renderings (a pattern that is accompanied by a warning).
     return unsafe_markUpdateLaneFromFiberToRoot(fiber, lane);
   } else {
+    // !正常的更新/函数组件更新
     return enqueueConcurrentClassUpdate(fiber, sharedQueue, update, lane);
   }
 }

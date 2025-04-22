@@ -127,6 +127,11 @@
 					"line": 387,
 					"column": 29,
 					"label": ""
+				},
+				{
+					"line": 453,
+					"column": 49,
+					"label": ""
 				}
 			]
 		},
@@ -181,6 +186,36 @@
 				{
 					"line": 192,
 					"column": 20,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberClassUpdateQueue.js",
+			"bookmarks": [
+				{
+					"line": 223,
+					"column": 37,
+					"label": ""
+				},
+				{
+					"line": 275,
+					"column": 16,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberConcurrentUpdates.js",
+			"bookmarks": [
+				{
+					"line": 54,
+					"column": 40,
+					"label": ""
+				},
+				{
+					"line": 165,
+					"column": 52,
 					"label": ""
 				}
 			]

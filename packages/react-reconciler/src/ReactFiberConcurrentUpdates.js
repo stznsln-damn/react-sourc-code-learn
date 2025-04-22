@@ -42,11 +42,22 @@ type ConcurrentQueue = {
 // we wait until the current render is over (either finished or interrupted)
 // before adding it to the fiber/hook queue. Push to this array so we can
 // access the queue, fiber, update, et al later.
+/**
+ * !批量缓冲区 fiber,queue,update,lane 每四个一组 调度时依次取出 处理完之后清空并重置concurrentQueuesIndex
+ * ! 1.render 阶段不会直接修改 Fiber 树，保证一致性和并发安全。
+ * ! 2.批量插入，提升性能。
+ * ![
+ * !  fiber1, queue1, update1, lane1,
+ * !  fiber2, queue2, update2, lane2,
+ * !  ...
+ * !]
+ */
 const concurrentQueues: Array<any> = [];
 let concurrentQueuesIndex = 0;
 
 let concurrentlyUpdatedLanes: Lanes = NoLanes;
 
+// !批量缓冲区完成一次操作 重置缓冲区
 export function finishQueueingConcurrentUpdates(): void {
   const endIndex = concurrentQueuesIndex;
   concurrentQueuesIndex = 0;
@@ -86,6 +97,7 @@ export function getConcurrentlyUpdatedLanes(): Lanes {
   return concurrentlyUpdatedLanes;
 }
 
+// !将更新添加到fiber的更新队列
 function enqueueUpdate(
   fiber: Fiber,
   queue: ConcurrentQueue | null,
@@ -94,6 +106,7 @@ function enqueueUpdate(
 ) {
   // Don't update the `childLanes` on the return path yet. If we already in
   // the middle of rendering, wait until after it has completed.
+  // !将fiber,queue,update,lane添加到concurrentQueues批量缓冲区
   concurrentQueues[concurrentQueuesIndex++] = fiber;
   concurrentQueues[concurrentQueuesIndex++] = queue;
   concurrentQueues[concurrentQueuesIndex++] = update;
@@ -149,6 +162,7 @@ export function enqueueConcurrentHookUpdateAndEagerlyBailout<S, A>(
   }
 }
 
+// !将更新添加到fiber的更新队列
 export function enqueueConcurrentClassUpdate<State>(
   fiber: Fiber,
   queue: ClassQueue<State>,
@@ -248,6 +262,7 @@ function markUpdateLaneFromFiberToRoot(
   return null;
 }
 
+// !获取fiber所属的FiberRoot
 function getRootForUpdatedFiber(sourceFiber: Fiber): FiberRoot | null {
   // TODO: We will detect and infinite update loop and throw even if this fiber
   // has already unmounted. This isn't really necessary but it happens to be the
