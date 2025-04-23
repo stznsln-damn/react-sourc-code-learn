@@ -192,10 +192,13 @@ function flushSyncWorkAcrossRoots_impl(
   do {
     didPerformSomeWork = false;
     let root = firstScheduledRoot;
+    // !循环遍历FiberRoot链表 通常只有一个
     while (root !== null) {
+      // !onlyLegacy 通常为false
       if (onlyLegacy && (disableLegacyMode || root.tag !== LegacyRoot)) {
         // Skip non-legacy roots.
       } else {
+        // !初次渲染时为false
         if (syncTransitionLanes !== NoLanes) {
           const nextLanes = getNextLanesToFlushSync(root, syncTransitionLanes);
           if (nextLanes !== NoLanes) {
@@ -224,6 +227,7 @@ function flushSyncWorkAcrossRoots_impl(
           ) {
             // This root has pending sync work. Flush it now.
             didPerformSomeWork = true;
+            // !真正执行Fiber构建 diff commit 把react组件渲染到页面上
             performSyncWorkOnRoot(root, nextLanes);
           }
         }
@@ -270,7 +274,7 @@ function processRootScheduleInMicrotask() {
   const currentTime = now();
 
   let prev = null;
-  // !遍历调度链表
+  // !遍历调度链表 (支持多个react实例)
   let root = firstScheduledRoot;
   while (root !== null) {
     const next = root.next;
@@ -385,8 +389,8 @@ function scheduleTaskForRootDuringMicrotask(
   }
 
   // Schedule a new callback in the host environment.
+  // !同步lane (首次渲染为同步 true)
   if (
-    // !同步lane (首次渲染为同步)
     includesSyncLane(nextLanes) &&
     // If we're prerendering, then we should use the concurrent work loop
     // even if the lanes are synchronous, so that prerendering never blocks

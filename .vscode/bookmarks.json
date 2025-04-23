@@ -94,12 +94,12 @@
 					"label": ""
 				},
 				{
-					"line": 130,
+					"line": 131,
 					"column": 5,
 					"label": ""
 				},
 				{
-					"line": 169,
+					"line": 170,
 					"column": 27,
 					"label": ""
 				},
@@ -227,6 +227,46 @@
 					"line": 865,
 					"column": 7,
 					"label": ""
+				},
+				{
+					"line": 1017,
+					"column": 34,
+					"label": ""
+				},
+				{
+					"line": 1061,
+					"column": 34,
+					"label": ""
+				},
+				{
+					"line": 1290,
+					"column": 32,
+					"label": ""
+				},
+				{
+					"line": 1444,
+					"column": 29,
+					"label": ""
+				},
+				{
+					"line": 2350,
+					"column": 24,
+					"label": ""
+				},
+				{
+					"line": 3250,
+					"column": 20,
+					"label": ""
+				},
+				{
+					"line": 3580,
+					"column": 39,
+					"label": ""
+				},
+				{
+					"line": 3602,
+					"column": 19,
+					"label": ""
 				}
 			]
 		},
@@ -244,22 +284,42 @@
 					"label": ""
 				},
 				{
-					"line": 203,
+					"line": 172,
+					"column": 39,
+					"label": ""
+				},
+				{
+					"line": 206,
 					"column": 31,
 					"label": ""
 				},
 				{
-					"line": 247,
+					"line": 230,
+					"column": 31,
+					"label": ""
+				},
+				{
+					"line": 251,
 					"column": 43,
 					"label": ""
 				},
 				{
-					"line": 328,
+					"line": 280,
+					"column": 56,
+					"label": ""
+				},
+				{
+					"line": 332,
 					"column": 40,
 					"label": ""
 				},
 				{
-					"line": 600,
+					"line": 558,
+					"column": 9,
+					"label": ""
+				},
+				{
+					"line": 604,
 					"column": 46,
 					"label": ""
 				}
@@ -291,6 +351,26 @@
 				{
 					"line": 84,
 					"column": 55,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberCommitWork.js",
+			"bookmarks": [
+				{
+					"line": 1906,
+					"column": 9,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberCommitHostEffects.js",
+			"bookmarks": [
+				{
+					"line": 447,
+					"column": 9,
 					"label": ""
 				}
 			]

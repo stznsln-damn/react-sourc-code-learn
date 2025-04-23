@@ -102,6 +102,7 @@ function ReactDOMRoot(internalRoot: FiberRoot) {
 // !reactRoot渲染方法 children: 一般为根组件App
 ReactDOMHydrationRoot.prototype.render = ReactDOMRoot.prototype.render =
   // $FlowFixMe[missing-this-annot]
+  // ! children: 一般为根组件App
   function (children: ReactNodeList): void {
     const root = this._internalRoot;
     if (root === null) {
@@ -243,13 +244,12 @@ export function createRoot(
   // !标记container为root
   markContainerAsRoot(root.current, container);
 
-  // console.log(root, 'fiber root', '哈哈哈333');
-
+  // ! #app
   const rootContainerElement: Document | Element | DocumentFragment =
     !disableCommentsAsDOMContainers && container.nodeType === COMMENT_NODE
       ? (container.parentNode: any)
       : container;
-  // !事件代理，监听所有事件 绑定在rootContainerElement上
+  // !事件委托 节点的事件包装成合成事件 监听所有事件 绑定在rootContainerElement上
   listenToAllSupportedEvents(rootContainerElement);
 
   // $FlowFixMe[invalid-constructor] Flow no longer supports calling new on functions

@@ -279,6 +279,7 @@ function getRootForUpdatedFiber(sourceFiber: Fiber): FiberRoot | null {
   // different times.
   // TODO: Consider adding a `root` backpointer on the update queue.
   detectUpdateOnUnmountedFiber(sourceFiber, sourceFiber);
+  // !向上遍历fiber树 fiber的return属性存储父fiber
   let node = sourceFiber;
   let parent = node.return;
   while (parent !== null) {

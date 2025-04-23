@@ -344,7 +344,7 @@ export function createHydrationContainer(
 // !更新fiber root
 export function updateContainer(
   element: ReactNodeList,
-  container: OpaqueRoot,
+  container: OpaqueRoot, // ! FiberRoot
   parentComponent: ?React$Component<any, any>, // !初始render为null
   callback: ?Function,
 ): Lane {

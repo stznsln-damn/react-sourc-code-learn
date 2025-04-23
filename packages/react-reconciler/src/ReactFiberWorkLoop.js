@@ -1046,6 +1046,7 @@ export function performWorkOnRoot(
   // We disable time-slicing in some cases: if the work has been CPU-bound
   // for too long ("expired" work, to prevent starvation), or we're in
   // sync-updates-by-default mode.
+  // !判断是否需要时间切片 首次渲染通常为false
   const shouldTimeSlice =
     (!forceSync &&
       !includesBlockingLane(lanes) &&
@@ -1057,9 +1058,10 @@ export function performWorkOnRoot(
     // even for regular pings.
     (enableSiblingPrerendering && checkIfRootIsPrerendering(root, lanes));
 
+  // !构建 fiber 树
   let exitStatus = shouldTimeSlice
     ? renderRootConcurrent(root, lanes)
-    : renderRootSync(root, lanes, true);
+    : renderRootSync(root, lanes, true); //
 
   let renderWasConcurrent = shouldTimeSlice;
 
@@ -1104,7 +1106,9 @@ export function performWorkOnRoot(
       // TODO: It's possible that even a concurrent render may never have yielded
       // to the main thread, if it was fast enough, or if it expired. We could
       // skip the consistency check in that case, too.
+      // !渲染完成后 获取本次渲染的finishedWork
       const finishedWork: Fiber = (root.current.alternate: any);
+      // !检查是否有并发渲染导致的 store 不一致
       if (
         renderWasConcurrent &&
         !isRenderConsistentWithExternalStores(finishedWork)
@@ -1125,6 +1129,7 @@ export function performWorkOnRoot(
       }
 
       // Check if something threw
+      // !错误处理
       if (
         (disableLegacyMode || root.tag !== LegacyRoot) &&
         exitStatus === RootErrored
@@ -1165,6 +1170,7 @@ export function performWorkOnRoot(
           }
         }
       }
+      // !致命错误
       if (exitStatus === RootFatalErrored) {
         if (enableProfilerTimer && enableComponentPerformanceTrack) {
           setCurrentTrackFromLanes(lanes);
@@ -1181,6 +1187,7 @@ export function performWorkOnRoot(
 
       // We now have a consistent tree. The next step is either to commit it,
       // or, if something suspended, wait to commit it after a timeout.
+      // !渲染成功 准备进入commit阶段
       finishConcurrentRender(
         root,
         exitStatus,
@@ -1291,6 +1298,7 @@ function finishConcurrentRender(
   // TODO: The fact that most of these branches are identical suggests that some
   // of the exit statuses are not best modeled as exit statuses and should be
   // tracked orthogonally.
+  // !一般情况没有错误 跳过
   switch (exitStatus) {
     case RootInProgress:
     case RootFatalErrored: {
@@ -1339,6 +1347,7 @@ function finishConcurrentRender(
     }
   }
 
+  // !测试情况
   if (shouldForceFlushFallbacksInDEV()) {
     // We're inside an `act` scope. Commit immediately.
     commitRoot(
@@ -1357,6 +1366,7 @@ function finishConcurrentRender(
       renderEndTime,
     );
   } else {
+    // !判断是否是Suspense重试
     if (
       includesOnlyRetries(lanes) &&
       (alwaysThrottleRetries || exitStatus === RootSuspended)
@@ -1412,6 +1422,7 @@ function finishConcurrentRender(
         return;
       }
     }
+    // !正常commit流程
     commitRootWhenReady(
       root,
       finishedWork,
@@ -1460,6 +1471,7 @@ function commitRootWhenReady(
     subtreeFlags & ShouldSuspendCommit ||
     (subtreeFlags & BothVisibilityAndMaySuspendCommit) ===
       BothVisibilityAndMaySuspendCommit;
+  // !判断需要挂起commit transition suspense 手势等情况
   if (isViewTransitionEligible || maySuspendCommit || isGestureTransition) {
     // Before committing, ask the renderer whether the host tree is ready.
     // If it's not, we'll wait until it notifies us.
@@ -1515,6 +1527,7 @@ function commitRootWhenReady(
   }
 
   // Otherwise, commit immediately.;
+  // !否则直接commit
   commitRoot(
     root,
     finishedWork,
@@ -2334,6 +2347,7 @@ export function renderHasNotSuspendedYet(): boolean {
 // TODO: Over time, this function and renderRootConcurrent have become more
 // and more similar. Not sure it makes sense to maintain forked paths. Consider
 // unifying them again.
+// !同步构建Fiber树 递归遍历虚拟DOM 生成workInProgress Fiber树
 function renderRootSync(
   root: FiberRoot,
   lanes: Lanes,
@@ -3251,6 +3265,7 @@ function commitRoot(
 ): void {
   root.cancelPendingCommit = null;
 
+  // !处理和清理pending effects(副作用) 首次渲染如果有 useEffect，会在这里被调度。
   do {
     // `flushPassiveEffects` will call `flushSyncUpdateQueue` at the end, which
     // means `flushPassiveEffects` will sometimes result in additional
@@ -3342,6 +3357,7 @@ function commitRoot(
     remainingLanes &= ~GestureLane;
   }
 
+  // !标记完成
   markRootFinished(
     root,
     lanes,
@@ -3351,6 +3367,7 @@ function commitRoot(
     suspendedRetryLanes,
   );
 
+  // !清理全局变量
   // Reset this before firing side effects so we can detect recursive updates.
   didIncludeCommitPhaseUpdate = false;
 
@@ -3433,6 +3450,7 @@ function commitRoot(
       // So we can clear these now to allow a new callback to be scheduled.
       root.callbackNode = null;
       root.callbackPriority = NoLane;
+      // !有 passive effect（如 useEffect），调度异步执行
       scheduleCallback(NormalSchedulerPriority, () => {
         if (enableProfilerTimer && enableComponentPerformanceTrack) {
           // Track the currently executing event if there is one so we can ignore this
@@ -3530,6 +3548,7 @@ function commitRoot(
     );
   } else {
     // Flush synchronously.
+    // !同步执行 mutation/layout effects
     flushMutationEffects();
     flushLayoutEffects();
     // Skip flushAfterMutationEffects
