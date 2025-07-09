@@ -129,7 +129,7 @@
 					"label": ""
 				},
 				{
-					"line": 453,
+					"line": 455,
 					"column": 49,
 					"label": ""
 				}
@@ -166,6 +166,11 @@
 				{
 					"line": 523,
 					"column": 36,
+					"label": ""
+				},
+				{
+					"line": 727,
+					"column": 25,
 					"label": ""
 				}
 			]
@@ -224,48 +229,38 @@
 			"path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
 			"bookmarks": [
 				{
-					"line": 865,
-					"column": 7,
+					"line": 1191,
+					"column": 22,
 					"label": ""
 				},
 				{
-					"line": 1017,
-					"column": 34,
+					"line": 1291,
+					"column": 9,
 					"label": ""
 				},
 				{
-					"line": 1061,
-					"column": 34,
-					"label": ""
-				},
-				{
-					"line": 1290,
-					"column": 32,
-					"label": ""
-				},
-				{
-					"line": 1444,
-					"column": 29,
-					"label": ""
-				},
-				{
-					"line": 2350,
+					"line": 1426,
 					"column": 24,
 					"label": ""
 				},
 				{
-					"line": 3250,
-					"column": 20,
+					"line": 1445,
+					"column": 29,
 					"label": ""
 				},
 				{
-					"line": 3580,
-					"column": 39,
+					"line": 1531,
+					"column": 13,
 					"label": ""
 				},
 				{
-					"line": 3602,
-					"column": 19,
+					"line": 3115,
+					"column": 34,
+					"label": ""
+				},
+				{
+					"line": 3259,
+					"column": 9,
 					"label": ""
 				}
 			]
@@ -294,32 +289,32 @@
 					"label": ""
 				},
 				{
-					"line": 230,
+					"line": 231,
 					"column": 31,
 					"label": ""
 				},
 				{
-					"line": 251,
+					"line": 252,
 					"column": 43,
 					"label": ""
 				},
 				{
-					"line": 280,
+					"line": 281,
 					"column": 56,
 					"label": ""
 				},
 				{
-					"line": 332,
+					"line": 333,
 					"column": 40,
 					"label": ""
 				},
 				{
-					"line": 558,
+					"line": 559,
 					"column": 9,
 					"label": ""
 				},
 				{
-					"line": 604,
+					"line": 605,
 					"column": 46,
 					"label": ""
 				}
@@ -371,6 +366,81 @@
 				{
 					"line": 447,
 					"column": 9,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberBeginWork.js",
+			"bookmarks": [
+				{
+					"line": 339,
+					"column": 16,
+					"label": ""
+				},
+				{
+					"line": 1113,
+					"column": 9,
+					"label": ""
+				},
+				{
+					"line": 1196,
+					"column": 34,
+					"label": ""
+				},
+				{
+					"line": 1221,
+					"column": 14,
+					"label": ""
+				},
+				{
+					"line": 3834,
+					"column": 19,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactChildFiber.js",
+			"bookmarks": [
+				{
+					"line": 1621,
+					"column": 9,
+					"label": ""
+				},
+				{
+					"line": 1708,
+					"column": 38,
+					"label": ""
+				},
+				{
+					"line": 1947,
+					"column": 32,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "packages/react-reconciler/src/ReactFiberCompleteWork.js",
+			"bookmarks": [
+				{
+					"line": 768,
+					"column": 9,
+					"label": ""
+				},
+				{
+					"line": 974,
+					"column": 22,
+					"label": ""
+				},
+				{
+					"line": 1270,
+					"column": 25,
+					"label": ""
+				},
+				{
+					"line": 1314,
+					"column": 42,
 					"label": ""
 				}
 			]

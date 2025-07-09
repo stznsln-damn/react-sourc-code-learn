@@ -592,6 +592,7 @@ export function renderWithHooks<Props, SecondArg>(
     __DEV__ && (workInProgress.mode & StrictLegacyMode) !== NoMode;
 
   shouldDoubleInvokeUserFnsInHooksDEV = shouldDoubleRenderDEV;
+  // !执行组件函数 获取函数组件返回的ReactElement
   let children = __DEV__
     ? callComponentInDEV(Component, props, secondArg)
     : Component(props, secondArg);

@@ -1066,6 +1066,7 @@ export function performWorkOnRoot(
   let renderWasConcurrent = shouldTimeSlice;
 
   do {
+    // !还未构建完成
     if (exitStatus === RootInProgress) {
       // Render phase is still in progress.
       if (
@@ -2451,6 +2452,7 @@ function renderRootSync(
           }
         }
       }
+      // !调用workLoopSync
       workLoopSync();
       exitStatus = workInProgressRootExitStatus;
       break;
@@ -2458,6 +2460,8 @@ function renderRootSync(
       handleThrow(root, thrownValue);
     }
   } while (true);
+
+  // !----- 统计、重置工作 -----
 
   // Check if something suspended in the shell. We use this to detect an
   // infinite ping loop caused by an uncached promise.
@@ -2807,6 +2811,7 @@ function workLoopConcurrentByScheduler() {
   }
 }
 
+// !创建下一个Fiber节点并赋值给workInProgress，并将workInProgress与已创建的Fiber节点连接起来构成Fiber树。
 function performUnitOfWork(unitOfWork: Fiber): void {
   // The current, flushed, state of this fiber is the alternate. Ideally
   // nothing should rely on this, but relying on it here means that we don't
@@ -2838,6 +2843,7 @@ function performUnitOfWork(unitOfWork: Fiber): void {
         entangledRenderLanes,
       );
     } else {
+      // !递阶段
       next = beginWork(current, unitOfWork, entangledRenderLanes);
     }
   }
@@ -2845,6 +2851,7 @@ function performUnitOfWork(unitOfWork: Fiber): void {
   unitOfWork.memoizedProps = unitOfWork.pendingProps;
   if (next === null) {
     // If this doesn't spawn new work, complete the current work.
+    // !归阶段
     completeUnitOfWork(unitOfWork);
   } else {
     workInProgress = next;
@@ -3105,6 +3112,7 @@ function panicOnRootError(root: FiberRoot, error: mixed) {
   workInProgress = null;
 }
 
+// !归阶段
 function completeUnitOfWork(unitOfWork: Fiber): void {
   // Attempt to complete the current unit of work, then move to the next
   // sibling. If there are no more siblings, return to the parent fiber.
@@ -3248,6 +3256,7 @@ function unwindUnitOfWork(unitOfWork: Fiber, skipSiblings: boolean): void {
   workInProgress = null;
 }
 
+// !commit阶段
 function commitRoot(
   root: FiberRoot,
   finishedWork: null | Fiber,

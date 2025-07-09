@@ -336,12 +336,14 @@ if (__DEV__) {
   didWarnAboutClassNameOnViewTransition = ({}: {[string]: boolean});
 }
 
+// !核心
 export function reconcileChildren(
   current: Fiber | null,
   workInProgress: Fiber,
   nextChildren: any,
   renderLanes: Lanes,
 ) {
+  // !mount类型
   if (current === null) {
     // If this is a fresh new component that hasn't been rendered yet, we
     // won't update its child set by applying minimal side-effects. Instead,
@@ -354,6 +356,7 @@ export function reconcileChildren(
       renderLanes,
     );
   } else {
+    // !update类型
     // If the current child is the same as the work in progress, it means that
     // we haven't yet started any work on these children. Therefore, we use
     // the clone algorithm to create a copy of all the current children.
@@ -1190,6 +1193,7 @@ function updateFunctionComponent(
     );
     hasId = checkDidRenderIdHook();
   } else {
+    // !执行函数组件 获取函数组件返回的ReactElement
     nextChildren = renderWithHooks(
       current,
       workInProgress,
@@ -3827,6 +3831,7 @@ function attemptEarlyBailoutIfNoScheduledUpdate(
   return bailoutOnAlreadyFinishedWork(current, workInProgress, renderLanes);
 }
 
+// !递阶段  beginWork
 function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -3849,6 +3854,7 @@ function beginWork(
     }
   }
 
+  // !current !== null 说明是更新 update操作
   if (current !== null) {
     const oldProps = current.memoizedProps;
     const newProps = workInProgress.pendingProps;
@@ -3896,6 +3902,7 @@ function beginWork(
       }
     }
   } else {
+    // !mount操作
     didReceiveUpdate = false;
 
     if (getIsHydrating() && isForkedChild(workInProgress)) {
@@ -3921,6 +3928,7 @@ function beginWork(
   // move this assignment out of the common path and into each branch.
   workInProgress.lanes = NoLanes;
 
+  // !mount时：根据tag不同，创建不同的子Fiber节点
   switch (workInProgress.tag) {
     case LazyComponent: {
       const elementType = workInProgress.elementType;

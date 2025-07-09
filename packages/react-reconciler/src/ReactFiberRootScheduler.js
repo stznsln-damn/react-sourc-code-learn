@@ -207,6 +207,7 @@ function flushSyncWorkAcrossRoots_impl(
             performSyncWorkOnRoot(root, nextLanes);
           }
         } else {
+          // !获取正在构建的fiberRoot
           const workInProgressRoot = getWorkInProgressRoot();
           const workInProgressRootRenderLanes =
             getWorkInProgressRootRenderLanes();
@@ -628,6 +629,7 @@ function scheduleImmediateRootScheduleTask() {
       const executionContext = getExecutionContext();
       if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
         // !在 useLayoutEffect、生命周期、render 阶段等“同步阶段”又触发了更新，并且调度器试图在微任务中处理这些更新时，就会走这个分支。
+        // !也是调用processRootScheduleInMicrotask
         // Note that this would still prematurely flush the callbacks
         // if this happens outside render or commit phase (e.g. in an event).
 

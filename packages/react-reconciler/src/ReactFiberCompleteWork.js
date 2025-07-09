@@ -971,6 +971,7 @@ function completeDehydratedSuspenseBoundary(
   }
 }
 
+// !归阶段
 function completeWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -999,6 +1000,12 @@ function completeWork(
     case Profiler:
     case ContextConsumer:
     case MemoComponent:
+      /**
+       * !代替17.x版本中的effect链表结构
+       * !子节点的flags向上累加到父节点的subtreeFlags 在commit阶段只需要检查父节点的subtreeFlags 就可以忽略没有变化的子树
+       * !17.x版本中的effect链表结构，在中断渲染等情况必须维护、清理链表，耗费性能。
+       * !新版本性能基本持平，但是更稳定，易维护。
+       */
       bubbleProperties(workInProgress);
       return null;
     case ClassComponent: {
@@ -1260,10 +1267,12 @@ function completeWork(
       }
       // Fall through
     }
+    // !原生dom对应的fiber节点
     case HostComponent: {
       popHostContext(workInProgress);
       const type = workInProgress.type;
       if (current !== null && workInProgress.stateNode != null) {
+        // !update情况
         updateHostComponent(
           current,
           workInProgress,
@@ -1302,6 +1311,7 @@ function completeWork(
           prepareToHydrateHostInstance(workInProgress, currentHostContext);
         } else {
           const rootContainerInstance = getRootHostContainer();
+          // !为fiber创建对应的dom节点
           const instance = createInstance(
             type,
             newProps,
@@ -1312,12 +1322,15 @@ function completeWork(
           // TODO: For persistent renderers, we should pass children as part
           // of the initial instance creation
           markCloned(workInProgress);
+          // !将子孙dom节点插入到刚生成的dom节点中 归阶段子孙dom已经创建完成
           appendAllChildren(instance, workInProgress, false, false);
+          // !DOM节点赋值给fiber.stateNode
           workInProgress.stateNode = instance;
 
           // Certain renderers require commit-time effects for initial mount.
           // (eg DOM renderer supports auto-focus for certain elements).
           // Make sure such renderers get scheduled for later work.
+          // !与update逻辑中的updateHostComponent类似的处理props的过程
           if (
             finalizeInitialChildren(
               instance,

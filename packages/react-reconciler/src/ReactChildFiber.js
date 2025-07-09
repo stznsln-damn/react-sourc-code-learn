@@ -478,6 +478,7 @@ function createChildReconciler(
     }
   }
 
+  // !DOM需要插入到页面中
   function placeSingleChild(newFiber: Fiber): Fiber {
     // This is simpler for the single child case. We only need to do a
     // placement for inserting new children.
@@ -1626,11 +1627,13 @@ function createChildReconciler(
   ): Fiber {
     const key = element.key;
     let child = currentFirstChild;
+    // !mount时 child === null
     while (child !== null) {
       // TODO: If key === null and child.key === null, then this only applies to
       // the first item in the list.
       if (child.key === key) {
         const elementType = element.type;
+        // !处理Fragment
         if (elementType === REACT_FRAGMENT_TYPE) {
           if (child.tag === Fragment) {
             deleteRemainingChildren(returnFiber, child.sibling);
@@ -1702,6 +1705,7 @@ function createChildReconciler(
       validateFragmentProps(element, created, returnFiber);
       return created;
     } else {
+      // !ReactElement类型fiber创建
       const created = createFiberFromElement(element, returnFiber.mode, lanes);
       coerceRef(created, element);
       created.return = returnFiber;
@@ -1769,6 +1773,7 @@ function createChildReconciler(
     // We treat the ambiguous cases above the same.
     // We don't use recursion here because a fragment inside a fragment
     // is no longer considered "top level" for these purposes.
+    // !处理顶层没有key没有ref的Fragment
     const isUnkeyedUnrefedTopLevelFragment =
       typeof newChild === 'object' &&
       newChild !== null &&
@@ -1782,10 +1787,13 @@ function createChildReconciler(
     }
 
     // Handle object types
+    // !处理对象类型 ReactElement / Portal / Lazy / Array / Iterable
     if (typeof newChild === 'object' && newChild !== null) {
       switch (newChild.$$typeof) {
+        // !处理ReactElement
         case REACT_ELEMENT_TYPE: {
           const prevDebugInfo = pushDebugInfo(newChild._debugInfo);
+          // !标记effectTag Placement 表示需要插入到dom中
           const firstChild = placeSingleChild(
             reconcileSingleElement(
               returnFiber,

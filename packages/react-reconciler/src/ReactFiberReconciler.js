@@ -426,12 +426,14 @@ function updateContainerImpl(
     }
   }
 
-  // !创建更新
+  // !初始化Update
   const update = createUpdate(lane);
   // Caution: React DevTools currently depends on this property
   // being called "element".
+  // !更新内容
   update.payload = {element};
 
+  // !赋值更新回调
   callback = callback === undefined ? null : callback;
   if (callback !== null) {
     if (__DEV__) {
